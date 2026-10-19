@@ -6,9 +6,11 @@ Projecte de captura i visualització de les estadístiques dels enllaços de ja.
 
 1. Enganxa la còpia de ja.cat a la pestanya `Buidat` del full «Seguiment de ja.cat».
 2. En enganxar la taula a partir de la cel·la A1, el full importa les dades a `Historial` i buida `Buidat` quan la importació s'ha completat. També es pot executar des del menú «Seguiment ja.cat».
-3. El dashboard llegeix `Historial` i mostra els totals, el rànquing, els enllaços més visitats i les variacions entre captures.
+3. «Seguiment de Ja.cat» llegeix `Historial`: permet escollir dates, agrupar per dia/setmana/mes/any i comparar fins a sis apps. Mostra acumulats, canvis entre captures, rànquing i tots els enllaços amb cerca i paginació. Permet exportar el gràfic en SVG i la selecció de la taula en CSV.
 
 Cada fila s’identifica per l’URL escurçada normalitzada (sense protocol, `www`, barra final ni paràmetres). L’ordre de les files de `Buidat` no intervé; `Historial` queda ordenat per app i àlies. Els enllaços nous s’afegeixen, les files omeses conserven les dades del dia i una URL duplicada provoca un avís sense buidar `Buidat`.
+
+Els acumulats utilitzen l’últim recompte conegut fins al final del període. El creixement només suma diferències observades: el primer recompte d’un enllaç és una base i les baixades de comptador s’exclouen. Si les captures estan separades per diversos dies, el canvi correspon a tot l’interval i s’atribueix a la captura final. Les setmanes comencen dilluns. Els càlculs i els gràfics s’executen al navegador sense llibreries externes.
 
 ## Accés i privacitat
 

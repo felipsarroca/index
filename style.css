@@ -94,6 +94,50 @@ h1 {
     color: #666;
 }
 
+.observatory-access {
+    margin: 34px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.observatory-access::before {
+    content: "";
+    width: 42px;
+    height: 1px;
+    margin-bottom: 6px;
+    background: #d8dbd3;
+}
+
+.observatory-caption {
+    font-size: 10px;
+    color: #929789;
+    letter-spacing: .04em;
+}
+
+.observatory-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 13px 7px 8px;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    color: #757d69;
+    font-size: 12px;
+    text-decoration: none;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.observatory-link:hover, .observatory-link:focus-visible {
+    background: #fffefa;
+    border-color: #e4e5dc;
+    color: #9c6848;
+}
+
+.observatory-link img { display: block; }
+.observatory-arrow { color: #acb09e; margin-left: 5px; }
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     h1 {
