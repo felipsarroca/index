@@ -94,6 +94,7 @@ function importaCaptura_(spreadsheet, raw) {
   });
 
   const incoming = [];
+  const incomingKeys = new Set();
   for (let i = 1; i < input.length; i++) {
     const row = input[i];
     const shortUrl = valor_(row, columns['enllac escurcat']);
@@ -101,8 +102,13 @@ function importaCaptura_(spreadsheet, raw) {
     const destination = valor_(row, columns['enllac']);
     const clicks = nombreClics_(valor_(row, columns['clics']));
     if (clicks === null) throw new Error('El recompte de clics de la fila ' + (i + 1) + ' no és numèric.');
+    const key = clauEnllac_(shortUrl);
+    if (incomingKeys.has(key)) {
+      throw new Error('L’enllaç escurçat de la fila ' + (i + 1) + ' està duplicat a Buidat: ' + shortUrl);
+    }
+    incomingKeys.add(key);
     incoming.push({
-      key: clauEnllac_(shortUrl),
+      key: key,
       shortUrl: shortUrl,
       alias: aliasDe_(shortUrl),
       destination: netejaUrl_(destination),
@@ -135,11 +141,15 @@ function importaCaptura_(spreadsheet, raw) {
     const previous = existing[i].slice();
     while (previous.length < headers.length) previous.push('');
     const key = clauEnllac_(String(previous[2] || ''));
-    if (key) rowsByKey.set(key, previous);
+    if (key) {
+      if (rowsByKey.has(key)) {
+        throw new Error('Historial conté més d’una fila per a l’enllaç ' + String(previous[2] || '') + '. No s’ha importat ni esborrat Buidat.');
+      }
+      rowsByKey.set(key, previous);
+    }
   }
 
-  // Una importació del mateix dia substitueix el recompte d’aquell dia.
-  rowsByKey.forEach(function (row) { row[dateColumn] = ''; });
+  // Només es canvien els enllaços presents; les files omeses conserven el valor del dia.
   incoming.forEach(function (item) {
     let row = rowsByKey.get(item.key);
     if (!row) {
@@ -155,7 +165,11 @@ function importaCaptura_(spreadsheet, raw) {
     row[dateColumn] = item.clicks;
   });
 
-  const output = [headers].concat(Array.from(rowsByKey.values()));
+  const orderedRows = Array.from(rowsByKey.values()).sort(function (a, b) {
+    return String(a[0] || '').localeCompare(String(b[0] || ''), 'ca') ||
+      String(a[1] || '').localeCompare(String(b[1] || ''), 'ca');
+  });
+  const output = [headers].concat(orderedRows);
   history.getRange(1, 1, output.length, headers.length).setValues(output);
   history.setFrozenRows(1);
   history.setFrozenColumns(CONFIG.baseHeaders.length);
@@ -205,7 +219,12 @@ function nombreClics_(value) {
 }
 
 function clauEnllac_(shortUrl) {
-  return String(shortUrl || '').trim().replace(/\/$/, '').toLowerCase();
+  return String(shortUrl || '').trim()
+    .replace(/^https?:\/\//i, '')
+    .replace(/^www\./i, '')
+    .replace(/[?#].*$/, '')
+    .replace(/\/+$/, '')
+    .toLowerCase();
 }
 
 function aliasDe_(shortUrl) {
