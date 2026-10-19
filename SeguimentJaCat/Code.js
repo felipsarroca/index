@@ -12,10 +12,15 @@ const CONFIG = {
 
 /** Serveix el dashboard privat des del mateix full de seguiment. */
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('Dashboard')
+  const page = HtmlService.createHtmlOutputFromFile('Dashboard')
     .setTitle('Seguiment de Ja.cat')
-    .setFaviconUrl('https://felipsarroca.github.io/index/SeguimentJaCat/favicon.svg?v=atelier-20261019')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+  try {
+    page.setFaviconUrl('https://felipsarroca.github.io/index/SeguimentJaCat/favicon.png?v=atelier-20261019');
+  } catch (error) {
+    console.warn('El favicon no està disponible; es mostra el dashboard igualment.');
+  }
+  return page;
 }
 
 /** Retorna captures i evolucions per representar-les al dashboard. */
