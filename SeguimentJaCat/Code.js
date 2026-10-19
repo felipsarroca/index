@@ -13,7 +13,7 @@ const CONFIG = {
 /** Serveix el dashboard privat des del mateix full de seguiment. */
 function doGet() {
   const page = HtmlService.createHtmlOutputFromFile('Dashboard')
-    .setTitle('Seguiment de Ja.cat')
+    .setTitle('Seguiment de ja.cat')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
   try {
     page.setFaviconUrl('https://felipsarroca.github.io/index/SeguimentJaCat/favicon.png?v=atelier-20261019');

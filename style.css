@@ -110,12 +110,6 @@ h1 {
     background: #d8dbd3;
 }
 
-.observatory-caption {
-    font-size: 10px;
-    color: #929789;
-    letter-spacing: .04em;
-}
-
 .observatory-link {
     display: inline-flex;
     align-items: center;
